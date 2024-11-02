@@ -1,0 +1,30 @@
+package com.ace.estore.common.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+	@ExceptionHandler(value = { ResourceNotFoundException.class })
+	public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException exc) {
+		return new ResponseEntity<String>(exc.getMessage(), HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(value = { ResourceExistsException.class })
+	public ResponseEntity<String> handleResourceExistsException(ResourceExistsException exc) {
+		return new ResponseEntity<String>(exc.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(value = { ValidationException.class })
+	public ResponseEntity<String> handleValidationException(ValidationException exc) {
+		return new ResponseEntity<String>(exc.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(value = { GeneralException.class })
+	public ResponseEntity<String> handleUnhandledException(GeneralException exc) {
+		return new ResponseEntity<String>(exc.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+}
