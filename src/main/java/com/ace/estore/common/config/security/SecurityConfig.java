@@ -19,6 +19,9 @@ public class SecurityConfig {
 	@Value("#{'${endpoints.auth.open}'.split(',')}")
 	private List<String> unauthEndpoints;
 
+//	@Value("#{'${allowed.cors.hosts}'.split(',')}")
+//	private List<String> allowedOrigins;
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		log.info("Endpoints : {} are not authenticated", unauthEndpoints);
@@ -31,4 +34,23 @@ public class SecurityConfig {
 				.build();
 	}
 
+	/*
+	 * CORS config
+	 */
+//	@Bean
+//	@Primary
+//	public WebMvcConfigurer addCorsConfigurer() {
+//		log.info("Allowed origins : {}", allowedOrigins);
+//		return new WebMvcConfigurer() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**") // You can restrict the mapping to specific paths if needed
+//						.allowedOrigins(unauthEndpoints.toArray(new String[allowedOrigins.size()])) // List allowed
+//																									// origins
+//						.allowedMethods("*") // Allow only certain HTTP methods
+//						.allowedHeaders("*") // Allow all headers
+//				;
+//			}
+//		};
+//	}
 }
