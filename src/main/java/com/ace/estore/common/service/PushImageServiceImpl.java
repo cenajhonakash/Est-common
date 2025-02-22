@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,18 +21,15 @@ import com.cloudinary.utils.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class PushImageServiceImpl implements PushImageService {
+@Service
+class PushImageServiceImpl implements PushImageService {
 
 	@Autowired
 	private Cloudinary cloudinary;
 
-//	public PushImageServiceImpl(Cloudinary cloudinary) {
-//		this.cloudinary = cloudinary;
-//	}
-
 	@Override
 	public List<ImageDetailsDto> uploadImages(List<MultipartFile> file) {
-		return file.stream().map(image -> {
+		return CollectionUtils.isEmpty(file) ? null : file.stream().map(image -> {
 			try {
 				Map result = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
 				return ImageDetailsDto.builder().publicId(result.get("public_id").toString())
